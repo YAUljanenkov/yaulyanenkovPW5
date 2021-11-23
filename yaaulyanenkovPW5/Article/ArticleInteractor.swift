@@ -14,28 +14,31 @@ import UIKit
 
 protocol ArticleBusinessLogic
 {
-  func doSomething(request: Article.Fetch.Request)
+  func getArticles(request: Article.Fetch.Request)
 }
 
 protocol ArticleDataStore
 {
-  //var name: String { get set }
+    
 }
 
 class ArticleInteractor: ArticleBusinessLogic, ArticleDataStore
 {
   var presenter: ArticlePresentationLogic?
   var worker: ArticleWorker?
-  //var name: String = ""
   
-  // MARK: Do something
   
-  func doSomething(request: Article.Fetch.Request)
-  {
-    worker = ArticleWorker()
-    worker?.doSomeWork()
-    
-    let response = Article.Fetch.Response()
-    presenter?.presentSomething(response: response)
-  }
+    func getArticles(request: Article.Fetch.Request)
+    {
+        print("enter get articles")
+        worker = ArticleWorker()
+        worker?.downloadArticles(request: request, completition: {response in
+            if let response = response {
+                for r in response.news! {
+                    print(r.title ?? "none")
+                }
+                self.presenter?.presentArticles(response: response)
+            }
+        })
+    }
 }

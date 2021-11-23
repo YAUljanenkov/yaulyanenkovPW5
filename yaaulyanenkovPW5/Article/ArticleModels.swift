@@ -14,16 +14,49 @@ import UIKit
 
 enum Article
 {
-  enum Fetch
-  {
-    struct Request
+    enum Fetch
     {
+        struct Request
+        {
+            var rubrikId = 4
+            var pageSize: Int
+            var pageIndex: Int
+            
+            func urlBuilder() -> URL? {
+                return URL(string: "https://news.myseldon.com/api/Section?rubricId=\(rubrikId)&pageSize=\(pageSize)&pageIndex=\(pageIndex)")
+            }
+        }
+        
+        struct Response: Codable
+        {
+            let newsTotalCount: Int?
+            var news: [ArticleModel]?
+            var requestId: String?
+            
+            mutating func passTheRequestId() {
+                for i in 0..<(news?.count ?? 0) {
+                    news?[i].requestId = requestId
+                }
+            }
+        }
+        
+        struct ArticleModel: Codable
+        {
+            let newsId: Int?
+            let img: ImageContainer?
+            let title: String?
+            let announce: String?
+            var requestId: String?
+            var articleUrl: URL? {
+                let requestId = requestId ?? ""
+                let newsId = newsId ?? 0
+                return URL(string: "https://news.myseldon.com/ru/news/index/\(newsId)?requestId=\(requestId)")
+            }
+            
+        }
+        
+        struct ImageContainer: Codable {
+            let url: URL?
+        }
     }
-    struct Response
-    {
-    }
-    struct ViewModel
-    {
-    }
-  }
 }

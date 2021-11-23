@@ -14,18 +14,16 @@ import UIKit
 
 protocol ArticlePresentationLogic
 {
-  func presentSomething(response: Article.Fetch.Response)
+    func presentArticles(response: Article.Fetch.Response)
 }
 
 class ArticlePresenter: ArticlePresentationLogic
 {
   weak var viewController: ArticleDisplayLogic?
   
-  // MARK: Do something
-  
-  func presentSomething(response: Article.Fetch.Response)
+  func presentArticles(response: Article.Fetch.Response)
   {
-    let viewModel = Article.Fetch.ViewModel()
-      viewController?.displayArticles(viewModel: viewModel)
+      let viewModels = response.news ?? []
+      viewController?.displayArticles(viewModels: viewModels)
   }
 }

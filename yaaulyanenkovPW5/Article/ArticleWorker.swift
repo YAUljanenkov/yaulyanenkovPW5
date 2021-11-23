@@ -12,9 +12,23 @@
 
 import UIKit
 
-class ArticleWorker
-{
-  func doSomeWork()
-  {
-  }
+class ArticleWorker {
+    
+    func downloadArticles(request: Article.Fetch.Request, completition: @escaping (Article.Fetch.Response?) -> ()){
+        guard let url = request.urlBuilder() else {
+            return
+        }
+        var result: Article.Fetch.Response? = nil
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                print(error)
+                return
+            }
+            if let data = data {
+                result = try? JSONDecoder().decode(Article.Fetch.Response.self, from: data)
+                result?.passTheRequestId()
+                completition(result)
+            }
+        }.resume()
+    }
 }

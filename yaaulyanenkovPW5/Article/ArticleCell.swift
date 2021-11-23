@@ -25,11 +25,32 @@ class ArticleCell: UITableViewCell {
         super.init(coder: coder)
     }
     
-    func setContent(id: Int) {
+    func setContent(article: Article.Fetch.ArticleModel) {
         var content = self.defaultContentConfiguration()
-//        content.image = UIImage(systemName: "star")
-        content.text = "Article \(id)"
-//        content.imageProperties.tintColor = .purple
+        content.image = UIImage(named: "kitten")
+        DispatchQueue.global().async {
+            let image = self.loadImage(url: article.img?.url) ?? UIImage(named: "kitten")
+            self.setImage(image: image)
+        }
+        content.text = article.title
+        content.secondaryText = article.announce
+        content.imageProperties.maximumSize = CGSize(width: 100, height: 66)
         contentConfiguration = content
+    }
+    
+    private func loadImage(url: URL?) -> UIImage? {
+        guard let url = url else {
+            return nil
+        }
+        guard let data = try? Data(contentsOf: url) else {
+            return nil
+        }
+        return UIImage(data: data)
+    }
+    
+    private func setImage(image: UIImage?){
+        DispatchQueue.main.async {
+            self.imageView?.image = image
+        }
     }
 }

@@ -14,7 +14,7 @@ import UIKit
 
 protocol ArticleDisplayLogic: AnyObject
 {
-  func displayArticles(viewModel: Article.Fetch.ViewModel)
+    func displayArticles(viewModels: [Article.Fetch.ArticleModel])
 }
 
 class ArticleViewController: UITableViewController, ArticleDisplayLogic
@@ -22,6 +22,7 @@ class ArticleViewController: UITableViewController, ArticleDisplayLogic
     let cellId = "ArticleCell"
     var interactor: ArticleBusinessLogic?
     var router: (NSObjectProtocol & ArticleRoutingLogic & ArticleDataPassing)?
+    var articles: [Article.Fetch.ArticleModel] = []
 
 
     private func setup()
@@ -56,7 +57,8 @@ class ArticleViewController: UITableViewController, ArticleDisplayLogic
     {
         super.viewDidLoad()
         self.navigationItem.title = "Articles"
-        doSomething()
+        setup()
+        setupData()
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath:
@@ -66,26 +68,31 @@ class ArticleViewController: UITableViewController, ArticleDisplayLogic
             for: indexPath
         ) as! ArticleCell
         
-        cell.setContent(id: indexPath.row)
+        cell.setContent(article: articles[indexPath.row])
         return cell
     }
 
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection
                    section: Int) -> Int {
-        return 30
+        return articles.count
     }
 
 
-    func doSomething()
+    func setupData()
     {
+        self.tableView = UITableView(frame: .zero, style: .grouped)
         self.tableView.register(ArticleCell.self, forCellReuseIdentifier: cellId)
-        let request = Article.Fetch.Request()
-        interactor?.doSomething(request: request)
+        let request = Article.Fetch.Request(pageSize: 8, pageIndex: 1)
+        interactor?.getArticles(request: request)
     }
 
-    func displayArticles(viewModel: Article.Fetch.ViewModel)
+    func displayArticles(viewModels: [Article.Fetch.ArticleModel])
     {
-    //nameTextField.text = viewModel.name
+        DispatchQueue.main.async {
+            self.articles = viewModels
+            self.tableView.reloadData()
+        }
+
     }
 }
