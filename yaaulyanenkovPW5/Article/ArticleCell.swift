@@ -11,7 +11,6 @@ import UIKit
 
 class ArticleCell: UITableViewCell {
     
-    
     override func prepareForReuse() {
         super.prepareForReuse()
         contentConfiguration = defaultContentConfiguration()
@@ -25,19 +24,6 @@ class ArticleCell: UITableViewCell {
         super.init(coder: coder)
     }
     
-    func setContent(article: Article.Fetch.ArticleModel) {
-        var content = self.defaultContentConfiguration()
-        content.image = UIImage(named: "kitten")
-        DispatchQueue.global().async {
-            let image = self.loadImage(url: article.img?.url) ?? UIImage(named: "kitten")
-            self.setImage(image: image)
-        }
-        content.text = article.title
-        content.secondaryText = article.announce
-        content.imageProperties.maximumSize = CGSize(width: 100, height: 66)
-        contentConfiguration = content
-    }
-    
     private func loadImage(url: URL?) -> UIImage? {
         guard let url = url else {
             return nil
@@ -48,9 +34,36 @@ class ArticleCell: UITableViewCell {
         return UIImage(data: data)
     }
     
-    private func setImage(image: UIImage?){
-        DispatchQueue.main.async {
-            self.imageView?.image = image
+    var loadedImage: UIImage? {
+        didSet {
+            DispatchQueue.main.async {
+                self.setNeedsUpdateConfiguration()
+            }
         }
     }
+    
+    var title: String?
+    var announce: String?
+    
+    override func updateConfiguration(using state: UICellConfigurationState) {
+        var content = self.defaultContentConfiguration().updated(for: state)
+        content.text = title
+        content.secondaryText = announce
+        content.image = self.loadedImage
+        content.imageProperties.reservedLayoutSize = CGSize(width: 120, height: 100)
+        content.imageProperties.maximumSize = CGSize(width: 120, height: 100)
+        self.contentConfiguration = content
+    }
+    
+    func setContent(article: Article.Fetch.ArticleModel) {
+        title = article.title
+        announce = article.announce
+        loadedImage = UIImage(named: "kitten")
+        DispatchQueue.global().async {
+            self.loadedImage = self.loadImage(url: article.img?.url)
+        }
+        setNeedsUpdateConfiguration()
+    }
+    
+    
 }
