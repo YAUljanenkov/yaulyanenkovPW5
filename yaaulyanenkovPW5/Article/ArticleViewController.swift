@@ -20,23 +20,27 @@ protocol ArticleDisplayLogic: AnyObject
 class ArticleViewController: UITableViewController, ArticleDisplayLogic
 {
     let cellId = "ArticleCell"
-    var interactor: ArticleBusinessLogic?
+    var interactor: (ArticleBusinessLogic & ArticleDataStore)?
     var router: (NSObjectProtocol & ArticleRoutingLogic & ArticleDataPassing)?
     var articles: [Article.Fetch.ArticleModel] = []
 
 
     private func setup()
     {
-    let viewController = self
-    let interactor = ArticleInteractor()
-    let presenter = ArticlePresenter()
-    let router = ArticleRouter()
-    viewController.interactor = interactor
-    viewController.router = router
-    interactor.presenter = presenter
-    presenter.viewController = viewController
-    router.viewController = viewController
-    router.dataStore = interactor
+        let viewController = self
+        let interactor = ArticleInteractor()
+        let presenter = ArticlePresenter()
+        let router = ArticleRouter()
+        viewController.interactor = interactor
+        viewController.router = router
+        interactor.presenter = presenter
+        presenter.viewController = viewController
+        router.viewController = viewController
+        router.dataStore = interactor
+        tableView = UITableView(frame: .zero, style: .grouped)
+        refreshControl = UIRefreshControl();
+        refreshControl?.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl?.addTarget(self, action: #selector(setupData), for: .valueChanged)
     }
 
     // MARK: Routing
@@ -79,9 +83,8 @@ class ArticleViewController: UITableViewController, ArticleDisplayLogic
     }
 
 
-    func setupData()
+    @objc func setupData()
     {
-        self.tableView = UITableView(frame: .zero, style: .grouped)
         self.tableView.register(ArticleCell.self, forCellReuseIdentifier: cellId)
         let request = Article.Fetch.Request(pageSize: 8, pageIndex: 1)
         interactor?.getArticles(request: request)
@@ -91,6 +94,7 @@ class ArticleViewController: UITableViewController, ArticleDisplayLogic
     {
         DispatchQueue.main.async {
             self.articles = viewModels
+            self.refreshControl?.endRefreshing();
             self.tableView.reloadData()
         }
 

@@ -19,24 +19,22 @@ protocol ArticleBusinessLogic
 
 protocol ArticleDataStore
 {
-    
+    var articles: [Article.Fetch.ArticleModel] {get set}
 }
 
 class ArticleInteractor: ArticleBusinessLogic, ArticleDataStore
 {
+  var articles: [Article.Fetch.ArticleModel] = []
   var presenter: ArticlePresentationLogic?
   var worker: ArticleWorker?
   
   
     func getArticles(request: Article.Fetch.Request)
     {
-        print("enter get articles")
         worker = ArticleWorker()
         worker?.downloadArticles(request: request, completition: {response in
             if let response = response {
-                for r in response.news! {
-                    print(r.title ?? "none")
-                }
+                self.articles = response.news ?? self.articles
                 self.presenter?.presentArticles(response: response)
             }
         })
