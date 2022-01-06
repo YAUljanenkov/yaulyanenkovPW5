@@ -88,7 +88,26 @@ class ArticleViewController: UITableViewController, ArticleDisplayLogic
         guard let url = articles[indexPath.row].articleUrl else {return}
         router?.showArticle(source: self, articleURL: url)
     }
+    
+    override func tableView(_ tableView: UITableView,
+                       trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let share = UIContextualAction(style: .normal,
+                                         title: "Share") { [weak self] (action, view, completionHandler) in
+            self?.shareNews(text: self?.articles[indexPath.row].articleUrl?.absoluteString ?? "")
+                                            completionHandler(true)
+        }
+        share.backgroundColor = .systemBlue
+        let configuration = UISwipeActionsConfiguration(actions: [share])
+        return configuration
+    }
 
+    func shareNews(text: String) {
+        let textShare = [ text ]
+        let activityViewController = UIActivityViewController(activityItems: textShare , applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view
+        self.present(activityViewController, animated: true, completion: nil)
+    }
+    
     @objc func setupData()
     {
         self.tableView.register(ArticleCell.self, forCellReuseIdentifier: cellId)
