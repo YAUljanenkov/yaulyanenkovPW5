@@ -11,10 +11,11 @@
 //
 
 import UIKit
+import WebKit
 
 @objc protocol ArticleRoutingLogic
 {
-  //func routeToSomewhere(segue: UIStoryboardSegue?)
+    func showArticle(source: ArticleViewController, articleURL: URL?)
 }
 
 protocol ArticleDataPassing
@@ -26,30 +27,16 @@ class ArticleRouter: NSObject, ArticleRoutingLogic, ArticleDataPassing
 {
   weak var viewController: ArticleViewController?
   var dataStore: ArticleDataStore?
-  
-  // MARK: Routing
-  
-  //func routeToSomewhere(segue: UIStoryboardSegue?)
-  //{
-  //  if let segue = segue {
-  //    let destinationVC = segue.destination as! SomewhereViewController
-  //    var destinationDS = destinationVC.router!.dataStore!
-  //    passDataToSomewhere(source: dataStore!, destination: &destinationDS)
-  //  } else {
-  //    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-  //    let destinationVC = storyboard.instantiateViewController(withIdentifier: "SomewhereViewController") as! SomewhereViewController
-  //    var destinationDS = destinationVC.router!.dataStore!
-  //    passDataToSomewhere(source: dataStore!, destination: &destinationDS)
-  //    navigateToSomewhere(source: viewController!, destination: destinationVC)
-  //  }
-  //}
 
   // MARK: Navigation
   
-  //func navigateToSomewhere(source: ArticleViewController, destination: SomewhereViewController)
-  //{
-  //  source.show(destination, sender: nil)
-  //}
+  func showArticle(source: ArticleViewController, articleURL: URL?)
+  {
+      guard let url = articleURL else { return }
+      let controller = WebViewController()
+      controller.url = url
+      source.show(controller, sender: nil)
+  }
   
   // MARK: Passing data
   

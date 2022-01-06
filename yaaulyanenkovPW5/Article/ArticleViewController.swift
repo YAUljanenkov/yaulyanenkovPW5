@@ -38,6 +38,8 @@ class ArticleViewController: UITableViewController, ArticleDisplayLogic
         router.viewController = viewController
         router.dataStore = interactor
         tableView = UITableView(frame: .zero, style: .grouped)
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
         refreshControl = UIRefreshControl();
         refreshControl?.attributedTitle = NSAttributedString(string: "Pull to refresh")
         refreshControl?.addTarget(self, action: #selector(setupData), for: .valueChanged)
@@ -81,7 +83,11 @@ class ArticleViewController: UITableViewController, ArticleDisplayLogic
                    section: Int) -> Int {
         return articles.count
     }
-
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let url = articles[indexPath.row].articleUrl else {return}
+        router?.showArticle(source: self, articleURL: url)
+    }
 
     @objc func setupData()
     {

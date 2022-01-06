@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9919E4F927877055009BD735 /* UIView++Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9919E4F827877055009BD735 /* UIView++Pin.swift */; };
+		9919E4FB27877413009BD735 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9919E4FA27877413009BD735 /* WebViewController.swift */; };
 		9971CA69274A5F7300CE2684 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9971CA68274A5F7300CE2684 /* AppDelegate.swift */; };
 		9971CA6B274A5F7300CE2684 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9971CA6A274A5F7300CE2684 /* SceneDelegate.swift */; };
 		9971CA72274A5F7700CE2684 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9971CA71274A5F7700CE2684 /* Assets.xcassets */; };
@@ -21,6 +23,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9919E4F827877055009BD735 /* UIView++Pin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIView++Pin.swift"; path = "yaaulyanenkovPW5/UIView++Pin.swift"; sourceTree = SOURCE_ROOT; };
+		9919E4FA27877413009BD735 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		9971CA65274A5F7300CE2684 /* yaaulyanenkovPW5.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = yaaulyanenkovPW5.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9971CA68274A5F7300CE2684 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9971CA6A274A5F7300CE2684 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -66,12 +70,14 @@
 		9971CA67274A5F7300CE2684 /* yaaulyanenkovPW5 */ = {
 			isa = PBXGroup;
 			children = (
+				9919E4F827877055009BD735 /* UIView++Pin.swift */,
 				9971CA91274A76A600CE2684 /* Article */,
 				9971CA68274A5F7300CE2684 /* AppDelegate.swift */,
 				9971CA6A274A5F7300CE2684 /* SceneDelegate.swift */,
 				9971CA71274A5F7700CE2684 /* Assets.xcassets */,
 				9971CA73274A5F7700CE2684 /* LaunchScreen.storyboard */,
 				9971CA76274A5F7700CE2684 /* Info.plist */,
+				9919E4FA27877413009BD735 /* WebViewController.swift */,
 			);
 			path = yaaulyanenkovPW5;
 			sourceTree = "<group>";
@@ -164,7 +170,9 @@
 				9971CA90274A769C00CE2684 /* ArticleInteractor.swift in Sources */,
 				9971CA8B274A769C00CE2684 /* ArticlePresenter.swift in Sources */,
 				9971CA8F274A769C00CE2684 /* ArticleViewController.swift in Sources */,
+				9919E4F927877055009BD735 /* UIView++Pin.swift in Sources */,
 				9971CA69274A5F7300CE2684 /* AppDelegate.swift in Sources */,
+				9919E4FB27877413009BD735 /* WebViewController.swift in Sources */,
 				9971CA93274A76EC00CE2684 /* ArticleCell.swift in Sources */,
 				9971CA8D274A769C00CE2684 /* ArticleRouter.swift in Sources */,
 				9971CA8E274A769C00CE2684 /* ArticleModels.swift in Sources */,

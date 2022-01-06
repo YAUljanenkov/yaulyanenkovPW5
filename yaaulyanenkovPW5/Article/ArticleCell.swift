@@ -44,6 +44,7 @@ class ArticleCell: UITableViewCell {
     
     var title: String?
     var announce: String?
+    var url: URL?
     
     override func updateConfiguration(using state: UICellConfigurationState) {
         var content = self.defaultContentConfiguration().updated(for: state)
@@ -59,6 +60,7 @@ class ArticleCell: UITableViewCell {
         title = article.title
         announce = article.announce
         loadedImage = UIImage(named: "kitten")
+        url = article.articleUrl
         DispatchQueue.global().async {
             self.loadedImage = self.loadImage(url: article.img?.url)
         }
