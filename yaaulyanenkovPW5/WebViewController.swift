@@ -1,5 +1,5 @@
 //
-//  WebViewDelegate.swift
+//  WebViewController.swift
 //  yaaulyanenkovPW5
 //
 //  Created by Ярослав Ульяненков on 06.01.2022.

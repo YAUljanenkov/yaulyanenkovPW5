@@ -21,6 +21,7 @@ class ArticleCell: UITableViewCell {
     var title: String?
     var announce: String?
     var url: URL?
+    var minHeight: CGFloat? = 100
     
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -35,6 +36,12 @@ class ArticleCell: UITableViewCell {
         super.prepareForReuse()
         loadedImage.startAnimating()
         contentConfiguration = defaultContentConfiguration()
+    }
+    
+    override func systemLayoutSizeFitting(_ targetSize: CGSize, withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority, verticalFittingPriority: UILayoutPriority) -> CGSize {
+        let size = super.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: horizontalFittingPriority, verticalFittingPriority: verticalFittingPriority)
+        guard let minHeight = minHeight else { return size }
+        return CGSize(width: size.width, height: max(size.height, minHeight))
     }
     
     override func updateConfiguration(using state: UICellConfigurationState) {

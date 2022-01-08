@@ -35,6 +35,7 @@ class ArticleInteractor: ArticleBusinessLogic, ArticleDataStore
         worker?.downloadArticles(request: request, completition: {response in
             if let response = response {
                 self.articles = response.news ?? self.articles
+                print(self.articles)
                 self.presenter?.presentArticles(response: response)
             }
         })

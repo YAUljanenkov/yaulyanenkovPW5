@@ -23,6 +23,7 @@ class ArticleViewController: UITableViewController, ArticleDisplayLogic
     var interactor: (ArticleBusinessLogic & ArticleDataStore)?
     var router: (NSObjectProtocol & ArticleRoutingLogic & ArticleDataPassing)?
     var articles: [Article.Fetch.ArticleModel] = []
+    var currentPageIndex = 1
 
 
     private func setup()
@@ -100,6 +101,12 @@ class ArticleViewController: UITableViewController, ArticleDisplayLogic
         let configuration = UISwipeActionsConfiguration(actions: [share])
         return configuration
     }
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row + 1 == articles.count {
+            uploadMoreNews()
+        }
+    }
 
     func shareNews(text: String) {
         let textShare = [ text ]
@@ -111,14 +118,22 @@ class ArticleViewController: UITableViewController, ArticleDisplayLogic
     @objc func setupData()
     {
         self.tableView.register(ArticleCell.self, forCellReuseIdentifier: cellId)
-        let request = Article.Fetch.Request(pageSize: 8, pageIndex: 1)
+        let request = Article.Fetch.Request(pageSize: 8, pageIndex: currentPageIndex)
+        currentPageIndex += 1
+        interactor?.getArticles(request: request)
+    }
+    
+    func uploadMoreNews()
+    {
+        let request = Article.Fetch.Request(pageSize: 8, pageIndex: currentPageIndex)
+        currentPageIndex += 1
         interactor?.getArticles(request: request)
     }
 
     func displayArticles(viewModels: [Article.Fetch.ArticleModel])
     {
         DispatchQueue.main.async {
-            self.articles = viewModels
+            self.articles.append(contentsOf: viewModels)
             self.refreshControl?.endRefreshing();
             self.tableView.reloadData()
         }
